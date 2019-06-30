@@ -1,6 +1,8 @@
 # VAM Launch v0.1
 ## VAM Plugin that adds support for Launch devices.
 
+Latest version download: [v0.1](https://github.com/ZengineerVAM/VAMLaunch/raw/master/VAMLaunch-0.1.zip)
+
 ###### First off
 
 VAM Launch uses code from the [ScriptPlayer](https://github.com/FredTungsten/ScriptPlayer)
