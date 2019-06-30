@@ -59,7 +59,7 @@ namespace VAMLaunch
             }
             
             Console.WriteLine("SERVER IS ON");
-            Console.WriteLine("Your FleshLight Launch is ready to go when your device shows a solid blue light.");
+            Console.WriteLine("Your Launch device is ready to go when your device shows a solid blue light.");
             Console.WriteLine("Note: You can type the command \"lc\" to attempt to re-establish communication.");
 
             _timeOfLastLaunchUpdate = DateTime.Now;
