@@ -1,4 +1,4 @@
-# VAM Launch
+# VAM Launch v0.1
 ## VAM Plugin that adds support for Launch devices.
 
 ###### First off
@@ -49,6 +49,15 @@ suffers from a slight delay but it seems to work fairly well in certain conditio
 and down in a fairly linear manner.
 > Slower motions may cause some strange behavior and if your motions are too fast
 then the device will not be able to keep up.
+
+###### Making sure your Launch device is ready
+
+I highly suggest following the instructions [here](https://github.com/FredTungsten/ScriptPlayer/wiki/Installation)
+and testing your device with ScriptPlayer first to confirm you have everything
+set up correctly.
+
+If your device can connect to ScriptPlayer then it is highly likely it will work
+with this plugin.
 
 ###### VAMLaunch Plugin and LaunchServer
 
