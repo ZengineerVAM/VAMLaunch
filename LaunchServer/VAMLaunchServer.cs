@@ -1,6 +1,11 @@
 using System;
 using System.Threading;
+using Buttplug.Client;
+using Buttplug.Core.Logging;
+using Buttplug.Core.Messages;
+using Buttplug.Server;
 using ScriptPlayer.Shared;
+using DeviceAddedEventArgs = Buttplug.Client.DeviceAddedEventArgs;
 
 namespace VAMLaunch
 {
@@ -19,9 +24,6 @@ namespace VAMLaunch
         private object _inputLock = new object();
         private string _userCmd;
 
-        private LaunchBluetooth _launchBluetooth;
-        private Launch _launchDevice;
-
         private bool _running;
 
         private byte _latestLaunchPos;
@@ -29,6 +31,10 @@ namespace VAMLaunch
         private float _latestLaunchDuration;
         private bool _hasNewLaunchSnapshot;
         private DateTime _timeOfLastLaunchUpdate;
+
+        private ButtplugClient _client;
+        private DeviceManager _deviceManager;
+        private ButtplugClientDevice _launchDevice;
 
         public void Run()
         {
@@ -84,28 +90,44 @@ namespace VAMLaunch
                 }
             }
             
-            _launchBluetooth.Stop();
+            // While this requires a wait as this is normally an async call,
+            // that's usually to confirm network shutdown. We're fine to just
+            // block on this until all devices are stopped.
+            _client.DisconnectAsync().Wait();
             
             _network.Stop();
         }
 
-        private void LaunchBluetoothOnDisconnected(object sender, EventArgs e)
+        private void OnDisconnected(object sender, EventArgs e)
         {
             _launchDevice = null;
             Console.WriteLine("**Launch Disconnected**");
         }
 
-        private void LaunchBluetoothOnDeviceRemoved(object sender, Device e)
+        private void OnDeviceRemoved(object sender, DeviceRemovedEventArgs e)
         {
-            _launchDevice = null;
-            Console.WriteLine("**Launch Device Removed**");
+            // Only update if we've dropped our linear movement device.
+            if (_launchDevice != null && e.Device.Index == _launchDevice.Index)
+            {
+                _launchDevice = null;
+                Console.WriteLine("**Launch Device Removed**");
+            }
         }
 
-        private void LaunchBluetoothOnDeviceFound(object sender, Device e)
+        private void OnDeviceAdded(object sender, DeviceAddedEventArgs e)
         {
-            _launchDevice = e as Launch;
-            _launchDevice.Disconnected += LaunchDeviceOnDisconnected;
-            Console.WriteLine("**Launch Device Found**");
+            if (_launchDevice != null)
+            {
+                Console.WriteLine($"**Device {e.Device.Name} Found but we already have a device, ignoring**");
+                return;
+            }
+            if (!e.Device.AllowedMessages.ContainsKey(typeof(LinearCmd)))
+            {
+                Console.WriteLine($"**Device {e.Device.Name} Found but does not support linear movement, ignoring**");
+                return;
+            }
+            Console.WriteLine($"**Adding Device {e.Device.Name}");
+            _launchDevice = e.Device;
         }
 
         private void LaunchDeviceOnDisconnected(object sender, Exception e)
@@ -113,19 +135,27 @@ namespace VAMLaunch
             Console.WriteLine("**Launch Disconnected** {0}", e.Message);
         }
 
+        private void OnLogMessage(object sender, LogEventArgs e)
+        {
+            Console.WriteLine($"Buttplug: {e.Message.LogLevel} {e.Message.LogMessage}");
+        }
+
         private void TryConnectToLaunch()
         {
             _launchDevice = null;
-            if (_launchBluetooth != null)
+            if (_client != null)
             {
-                _launchBluetooth.Stop();
+                _client.DisconnectAsync().Wait();
             }
             
-            _launchBluetooth = new LaunchBluetooth();
-            _launchBluetooth.DeviceFound += LaunchBluetoothOnDeviceFound;
-            _launchBluetooth.DeviceRemoved += LaunchBluetoothOnDeviceRemoved;
-            _launchBluetooth.Disconnected += LaunchBluetoothOnDisconnected;
-            _launchBluetooth.Start();
+            _client = new ButtplugClient("VaMLaunch Client", new ButtplugEmbeddedConnector("VaMLaunch Server"));
+            _client.DeviceAdded += OnDeviceAdded;
+            _client.DeviceRemoved += OnDeviceRemoved;
+            _client.ServerDisconnect += OnDisconnected;
+            //_client.Log += OnLogMessage;
+            _client.ConnectAsync().Wait();
+            _client.RequestLogAsync(ButtplugLogLevel.Debug).Wait();
+            _client.StartScanningAsync().Wait();
         }
         
         private void ProcessUserCmd(string cmd)
@@ -171,7 +201,7 @@ namespace VAMLaunch
         {
             if (_launchDevice != null)
             {
-                await _launchDevice.SetPosition(pos, speed);
+                await _launchDevice.SendFleshlightLaunchFW12Cmd(speed, pos);
             }
         }
 
