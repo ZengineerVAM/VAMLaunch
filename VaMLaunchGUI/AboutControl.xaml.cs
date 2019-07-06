@@ -12,8 +12,6 @@ namespace VaMLaunchGUI
         public AboutControl()
         {
             InitializeComponent();
-
-            _buildDate.Content = "Today"; //Properties.Resources.BuildDate;
         }
 
         private void TryUri(string aUri)

@@ -17,21 +17,15 @@
             <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Height="auto" Width="auto">
-            <Span FontSize="19" FontWeight="Bold">Intiface Game Haptics Router v1</Span><LineBreak />
-            By <Hyperlink NavigateUri="https://metafetish.com" RequestNavigate="Hyperlink_RequestNavigate">Nonpolynomial Labs, LLC</Hyperlink><LineBreak />
+            <Span FontSize="19" FontWeight="Bold">VaM Sync Server v1</Span><LineBreak />
+            By <Hyperlink NavigateUri="https://github.com/zengineervam" RequestNavigate="Hyperlink_RequestNavigate">zengineer</Hyperlink><LineBreak />
             <LineBreak/>
-            Software updates at <Hyperlink NavigateUri="https://ghr.intiface.io" RequestNavigate="Hyperlink_RequestNavigate">https://ghr.intiface.io/</Hyperlink><LineBreak/>
-            Source code at <Hyperlink NavigateUri="https://github.com/intiface/intiface-game-haptics-router" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/intiface/intiface-game-haptics-router</Hyperlink><LineBreak/>
-            Forums and Support at <Hyperlink NavigateUri="https://metafetish.club" RequestNavigate="Hyperlink_RequestNavigate">https://metafetish.club</Hyperlink><LineBreak/>
-            Discord Server at <Hyperlink NavigateUri="https://discord.buttplug.io" RequestNavigate="Hyperlink_RequestNavigate">https://discord.buttplug.io</Hyperlink><LineBreak/>
-            License information <Hyperlink NavigateUri="https://github.com/intiface/intiface-game-haptics-router/blob/master/LICENSE" RequestNavigate="Hyperlink_RequestNavigate">here</Hyperlink><LineBreak/>
+            Software updates at <Hyperlink NavigateUri="https://github.com/zengineervam/VaMLaunch" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/zengineervam/VaMLaunch/releases</Hyperlink><LineBreak/>
+            Source code at <Hyperlink NavigateUri="https://github.com/zengineervam/VaMLaunch" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/zengineervam/VaMLaunch</Hyperlink><LineBreak/>
+            Discord Server at <Hyperlink NavigateUri="https://discordapp.com/invite/VbfNN2x" RequestNavigate="Hyperlink_RequestNavigate">https://discordapp.com/invite/VbfNN2x</Hyperlink><LineBreak/>
+            License information <Hyperlink NavigateUri="https://github.com/zengineervam/VaMLaunch/blob/master/LICENSE" RequestNavigate="Hyperlink_RequestNavigate">here</Hyperlink><LineBreak/>
             <LineBreak/>
-            <LineBreak/>
-            <Hyperlink NavigateUri="https://patreon.com/qdot" RequestNavigate="Hyperlink_RequestNavigate">Support this project on Patreon!</Hyperlink>
-            <LineBreak/>
-            <LineBreak/>
+            VaMSync uses for hardware sync. More Info at  <Hyperlink NavigateUri="https://discordapp.com/invite/VbfNN2x" RequestNavigate="Hyperlink_RequestNavigate">Buttplug (https://buttplug.io)</Hyperlink>.
         </TextBlock>
-        <Label Grid.Row="1">Build Time: (If this looks old, check update link above for possible new versions)</Label>
-        <Label Grid.Row="2" Name="_buildDate">Test</Label>
     </Grid>
 </UserControl>
