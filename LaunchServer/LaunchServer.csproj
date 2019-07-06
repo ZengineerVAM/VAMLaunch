@@ -96,12 +96,16 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VAMLaunchNetwork.cs" />
-    <Compile Include="VAMLaunchServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LaunchServerLib\LaunchServerLib.csproj">
+      <Project>{6102e47a-d846-4de1-81b4-9489da3b6bf0}</Project>
+      <Name>LaunchServerLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
