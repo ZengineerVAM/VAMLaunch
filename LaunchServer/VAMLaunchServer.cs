@@ -26,6 +26,7 @@ namespace VAMLaunch
 
         private byte _latestLaunchPos;
         private byte _latestLaunchSpeed;
+        private float _latestLaunchDuration;
         private bool _hasNewLaunchSnapshot;
         private DateTime _timeOfLastLaunchUpdate;
 
@@ -198,10 +199,15 @@ namespace VAMLaunch
         private void ProcessNetworkMessages()
         {
             byte[] msg = _network.GetNextMessage();
-            if (msg != null && msg.Length >= 2)
+            if (msg != null && msg.Length == 6)
             {
                 _latestLaunchPos = msg[0];
                 _latestLaunchSpeed = msg[1];
+                _latestLaunchDuration = BitConverter.ToSingle(msg, 2);
+
+//                Console.WriteLine("Receiving: P:{0}, S:{1}, D:{2}", _latestLaunchPos, _latestLaunchSpeed,
+//                    _latestLaunchDuration);
+                
                 _hasNewLaunchSnapshot = true;
             }
         }
