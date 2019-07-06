@@ -227,7 +227,8 @@ namespace VaMLaunchGUI
         {
             foreach (var deviceItem in DevicesList)
             {
-                if (deviceItem.IsChecked && deviceItem.Device.AllowedMessages.ContainsKey(typeof(LinearCmd)))
+                // If the duration is 0, just drop the message.
+                if (deviceItem.IsChecked && deviceItem.Device.AllowedMessages.ContainsKey(typeof(LinearCmd)) && aDuration > 0)
                 {
                     await deviceItem.Device.SendLinearCmd(aDuration, aPosition);
                 }

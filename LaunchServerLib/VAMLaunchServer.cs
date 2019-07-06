@@ -5,9 +5,12 @@ namespace VAMLaunch
 {
     public class PositionUpdateEventArgs : EventArgs
     {
+        // 0-99, in Launch FW 1.2 message units
         public uint Position;
+        // 0-99, in Launch FW 1.2 message units
         public uint Speed;
-        public uint Duration;
+        // time in decimal seconds
+        public float Duration;
     }
 
 
