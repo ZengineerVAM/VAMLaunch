@@ -62,6 +62,7 @@ namespace VAMLaunchPlugin
 
             InitStorables();
             InitOptionsUI();
+            InitActions();
             InitNetwork();
         }
 
@@ -107,6 +108,27 @@ namespace VAMLaunchPlugin
             CreateScrollablePopup(_motionSourceChooser);
 
             CreateSpacer();
+        }
+
+        private void InitActions()
+        {
+            JSONStorableAction startLaunchAction = new JSONStorableAction("startLaunch", () =>
+            {
+                _pauseLaunchMessages.SetVal(false);
+            });
+            RegisterAction(startLaunchAction);
+            
+            JSONStorableAction stopLaunchAction = new JSONStorableAction("stopLaunch", () =>
+            {
+                _pauseLaunchMessages.SetVal(true);
+            });
+            RegisterAction(stopLaunchAction);
+            
+            JSONStorableAction toggleLaunchAction = new JSONStorableAction("toggleLaunch", () =>
+            {
+                _pauseLaunchMessages.SetVal(!_pauseLaunchMessages.val);
+            });
+            RegisterAction(toggleLaunchAction);
         }
 
         private int GetMotionSourceIndex(string name)

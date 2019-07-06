@@ -114,6 +114,7 @@ namespace VAMLaunchPlugin.MotionSources
         private List<string> GetTargetAnimationAtomChoices()
         {
             List<string> result = new List<string>();
+            result.Add("None");
             foreach (var uid in SuperController.singleton.GetAtomUIDs())
             {
                 var atom = SuperController.singleton.GetAtomByUid(uid);

@@ -457,12 +457,16 @@ namespace VAMLaunchPlugin.MotionSources
         
         private List<string> GetTargetAtomChoices()
         {
-            return SuperController.singleton.GetAtomUIDs();
+            List<string> result = new List<string>();
+            result.Add("None");
+            result.AddRange(SuperController.singleton.GetAtomUIDs());
+            return result;
         }
         
         private List<string> GetTargetControllerChoices()
         {
             List<string> result = new List<string>();
+            result.Add("None");
             if (_targetAtom == null)
             {
                 return result;
