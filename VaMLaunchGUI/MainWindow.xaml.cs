@@ -39,8 +39,6 @@ namespace VaMLaunchGUI
             LogManager.Configuration = LogManager.Configuration;
 #endif
 
-            _intifaceTab.LogMessageHandler += OnLogMessage;
-
             _log.Info("Application started.");
             server = new VAMLaunchServer();
             _serverTask = new Task (() => server.UpdateThread());
@@ -58,13 +56,8 @@ namespace VaMLaunchGUI
                     ConnectionStatus.Content = "Connected to VaM";
                 }
 
-                await _intifaceTab.FleshlightMovement(e.Speed, e.Position);
+                await _intifaceTab.Linear((uint)(e.Duration * 1000), (double)(e.Position / 100.0));
             });
-        }
-
-        protected void OnLogMessage(object aObj, string aMsg)
-        {
-            _log.Info(aMsg);
         }
     }
 }

@@ -79,7 +79,7 @@ namespace VaMLaunchGUI
             {
                 _logTarget = new IntifaceNLogTarget(_logs);
                 c.AddTarget("IntifaceLogger", _logTarget);
-                _outgoingLoggingRule = new LoggingRule("*", LogLevel.Debug, _logTarget);
+                _outgoingLoggingRule = new LoggingRule("*", LogLevel.Info, _logTarget);
                 c.LoggingRules.Add(_outgoingLoggingRule);
                 LogManager.Configuration = c;
             }
