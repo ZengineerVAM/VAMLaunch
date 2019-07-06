@@ -28,6 +28,7 @@ namespace VAMLaunchPlugin.MotionSources
         private UIDynamicButton _chooseAtomButton;
         private UIDynamicPopup _chooseAtomPopup;
         private UIDynamicPopup _chooseControlPopup;
+        private UIDynamic _spacer0;
         
         private FreeControllerV3 _pluginFreeController;
         private FreeControllerV3 _zoneFreeController;
@@ -389,7 +390,7 @@ namespace VAMLaunchPlugin.MotionSources
                 _launchSpeedMultiplier.SetVal(v);
             });
             
-            plugin.CreateSpacer();
+            _spacer0 = plugin.CreateSpacer();
             
             slider = plugin.CreateSlider(_currentLaunchSignalTimeThreshold, false);
             slider.label = "Adjust Time";
@@ -414,6 +415,7 @@ namespace VAMLaunchPlugin.MotionSources
             plugin.RemoveSlider(_launchSpeedMultiplier);
             plugin.RemoveSlider(_currentLaunchSignalTimeThreshold);
             plugin.RemoveSlider(_currentTargetPos);
+            plugin.RemoveSpacer(_spacer0);
         }
         
         private IEnumerator InitZoneAtom()

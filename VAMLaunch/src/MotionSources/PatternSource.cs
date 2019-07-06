@@ -69,6 +69,11 @@ namespace VAMLaunchPlugin.MotionSources
                     _animationAtomController = null;
                     _targetAnimationPattern = null;
 
+                    if (string.IsNullOrEmpty(name))
+                    {
+                        return;
+                    }
+                    
                     var atom = SuperController.singleton.GetAtomByUid(name);
                     if (atom && atom.animationPatterns.Length > 0)
                     {
@@ -149,14 +154,16 @@ namespace VAMLaunchPlugin.MotionSources
                 _samplePlaneChooser.choices = _samplePlaneChoices;
             };
             
-            var toggle = plugin.CreateToggle(_includeMidPoints);
+            var toggle = plugin.CreateToggle(_useLocalSpace);
+            toggle.label = "Use Local Space";
+            
+            toggle = plugin.CreateToggle(_includeMidPoints);
             toggle.label = "Include Mid Points";
             
             toggle = plugin.CreateToggle(_invertPosition);
             toggle.label = "Invert";
             
-            toggle = plugin.CreateToggle(_useLocalSpace);
-            toggle.label = "Use Local Space";
+            
         }
 
         private void DestroyOptionsUI(VAMLaunch plugin)
@@ -179,6 +186,10 @@ namespace VAMLaunchPlugin.MotionSources
         {
             if (_targetAnimationPattern == null)
             {
+                if (!string.IsNullOrEmpty(_targetAnimationAtomChooser.val))
+                {
+                    _targetAnimationAtomChooser.SetVal("");
+                }
                 return false;
             }
 

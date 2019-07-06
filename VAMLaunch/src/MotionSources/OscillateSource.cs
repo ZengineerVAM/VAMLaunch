@@ -55,14 +55,16 @@ namespace VAMLaunchPlugin.MotionSources
                     _animationAtomController = null;
                     _targetAnimationPattern = null;
 
+                    if (string.IsNullOrEmpty(name))
+                    {
+                        return;
+                    }
+
                     var atom = SuperController.singleton.GetAtomByUid(name);
                     if (atom && atom.animationPatterns.Length > 0)
                     {
                         _animationAtomController = atom.freeControllers[0];
                         _targetAnimationPattern = atom.animationPatterns[0];
-                        //_targetAnimationPattern.SetBoolParamValue("autoPlay", true);
-                        //_targetAnimationPattern.SetBoolParamValue("loopOnce", false);
-                        //_targetAnimationPattern.Play();
                     }
                 });
             plugin.RegisterStringChooser(_targetAnimationAtomChooser);
@@ -158,6 +160,11 @@ namespace VAMLaunchPlugin.MotionSources
         {
             if (_targetAnimationPattern == null)
             {
+                if (!string.IsNullOrEmpty(_targetAnimationAtomChooser.val))
+                {
+                    _targetAnimationAtomChooser.SetVal("");
+                }
+                
                 return;
             }
 
