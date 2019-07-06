@@ -8,7 +8,7 @@ using NLog.Config;
 using NLog.Targets;
 using VAMLaunch;
 
-namespace IntifaceGameHapticsRouter
+namespace VaMLaunchGUI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -18,6 +18,7 @@ namespace IntifaceGameHapticsRouter
         private readonly NLog.Logger _log;
         private VAMLaunchServer server;
         private Task _serverTask;
+        private bool _positionReceived = false;
 
         public MainWindow()
         {
@@ -40,7 +41,6 @@ namespace IntifaceGameHapticsRouter
 
             _intifaceTab.LogMessageHandler += OnLogMessage;
 
-            //_graphTab.PassthruChanged += PassthruChanged;
             _log.Info("Application started.");
             server = new VAMLaunchServer();
             _serverTask = new Task (() => server.UpdateThread());
@@ -51,7 +51,15 @@ namespace IntifaceGameHapticsRouter
 
         protected void OnPositionUpdate(object aObj, PositionUpdateEventArgs e)
         {
-            Dispatcher.Invoke(() => Console.WriteLine($"Got Position Update! {(e.Speed, e.Position)}"));
+            Dispatcher.Invoke(async () =>
+            {
+                if (!_positionReceived)
+                {
+                    ConnectionStatus.Content = "Connected to VaM";
+                }
+
+                await _intifaceTab.FleshlightMovement(e.Speed, e.Position);
+            });
         }
 
         protected void OnLogMessage(object aObj, string aMsg)

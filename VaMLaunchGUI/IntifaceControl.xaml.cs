@@ -82,14 +82,6 @@ namespace VaMLaunchGUI
                 }
                 connector = embeddedConnector;
             }
-            //else
-            {
-                //connector = new ButtplugWebsocketConnector(new Uri("ws://localhost:12345/buttplug"));
-                //var secureWebsocketConnector = new ButtplugWebsocketConnector();
-                //var ipcConnector = new ButtplugClientIPCConnector("ButtplugPort");
-                //var insecureWebsocketClient = new ButtplugClient("GVR - Insecure Websocket", insecureWebsocketConnector);
-                //var secureWebsocketClient = new ButtplugClient("GVR - Secure Websocket", secureWebsocketConnector);
-            }
 
             var client = new ButtplugClient("GVR - IPC", connector);
             while (!_quitting)
@@ -211,6 +203,17 @@ namespace VaMLaunchGUI
             }
         }
 
+        public async Task FleshlightMovement(uint aSpeed, uint aPosition)
+        {
+            foreach (var deviceItem in DevicesList)
+            {
+                if (deviceItem.IsChecked && deviceItem.Device.AllowedMessages.ContainsKey(typeof(LinearCmd)))
+                {
+                    await deviceItem.Device.SendFleshlightLaunchFW12Cmd(aSpeed, aPosition);
+                }
+            }
+        }
+
         public async Task Vibrate(double aSpeed)
         {
             foreach (var deviceItem in DevicesList)
@@ -222,56 +225,20 @@ namespace VaMLaunchGUI
             }
         }
 
+        public async Task Linear(uint aDuration, double aPosition)
+        {
+            foreach (var deviceItem in DevicesList)
+            {
+                if (deviceItem.IsChecked && deviceItem.Device.AllowedMessages.ContainsKey(typeof(LinearCmd)))
+                {
+                    await deviceItem.Device.SendLinearCmd(aDuration, aPosition);
+                }
+            }
+        }
+
         public async Task StopVibration()
         {
             await Vibrate(0);
         }
-
-        /*
-        private async void OnVibrationTimer(object aObj, ElapsedEventArgs e)
-        {
-            if (_lastVibration == _lastSentVibration && !_speedNeedsRecalc)
-            {
-                return;
-            }
-
-            await Dispatcher.Invoke(async () =>
-            {
-                foreach (var device in _devices)
-                {
-                    if (device.AllowedMessages.ContainsKey(typeof(VibrateCmd)))
-                    {
-                        try
-                        {
-                            var attrs = device.AllowedMessages[typeof(VibrateCmd)];
-                            var vibeCount = attrs.FeatureCount ?? 0;
-                            List<VibrateCmd.VibrateSubcommand> vibratorSettings = new List<VibrateCmd.VibrateSubcommand>();
-
-                            var averageVibeSpeed = (_lastVibration.LeftMotorSpeed + _lastVibration.RightMotorSpeed) / (2.0 * 65535.0);
-
-                            // Calculate the vibe speed by first adding the multiplier to the averaged speed 
-                            // Then check if it's above the baseline, if not default to the baseline
-                            // If it is then make sure we don't go above 1.0 speed or things start breaking
-                            //var vibeSpeed = Math.Min(Math.Max(averageVibeSpeed * _vibrationMultiplier, _vibrationBaseline), 1.0);
-                            var vibeSpeed = 0;
-                            for (var i = 0; i < vibeCount; i++)
-                            {
-                                vibratorSettings.Add(new VibrateCmd.VibrateSubcommand((uint)i, vibeSpeed));
-                            }
-
-                            //await _bpServer.SendMessage(new VibrateCmd(device.Index, vibratorSettings));
-                        }
-                        catch (Exception ex)
-                        {
-                            //_log.Error(ex);
-                        }
-                    }
-                }
-            });
-
-            _speedNeedsRecalc = false;
-            _lastSentVibration = _lastVibration;
-        }
-        */
     }
 }

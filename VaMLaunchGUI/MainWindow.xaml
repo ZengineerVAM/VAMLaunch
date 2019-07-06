@@ -1,4 +1,4 @@
-﻿<Window x:Class="IntifaceGameHapticsRouter.MainWindow"
+﻿<Window x:Class="VaMLaunchGUI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -13,7 +13,7 @@
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="Intiface Game Haptics Router" Height="450" Width="800">
+        Title="VaM Hardware Sync" Height="450" Width="800">
 
 
     <Grid>
@@ -22,9 +22,10 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <TabControl Grid.Row="0" Grid.Column="0" Height="Auto" Width="Auto">
-            <TabItem Header="Intiface Connection" VerticalAlignment="Top" Padding="10, 3, 10, 3">
+            <TabItem Header="Hardware Connection" VerticalAlignment="Top" Padding="10, 3, 10, 3">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"></ColumnDefinition>
@@ -50,6 +51,6 @@
                 <local:AboutControl></local:AboutControl>
             </TabItem>
         </TabControl>
-
+        <Label Grid.Row="1" Grid.Column="0" Name="ConnectionStatus">Waiting For VaM Connection...</Label>
     </Grid>
 </Window>
