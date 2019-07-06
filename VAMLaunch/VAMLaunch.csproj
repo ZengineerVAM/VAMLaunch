@@ -92,6 +92,7 @@
     <Compile Include="src\LaunchUtils.cs" />
     <Compile Include="src\MotionSources\IMotionSource.cs" />
     <Compile Include="src\MotionSources\OscillateSource.cs" />
+    <Compile Include="src\MotionSources\PatternSource.cs" />
     <Compile Include="src\MotionSources\ZoneSource.cs" />
     <Compile Include="src\VAMLaunch.cs" />
     <Compile Include="src\VAMLaunchNetwork.cs" />

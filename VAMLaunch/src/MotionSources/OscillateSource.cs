@@ -5,6 +5,8 @@ namespace VAMLaunchPlugin.MotionSources
 {
     public class OscillateSource : IMotionSource
     {
+        private const float LAUNCH_DIR_CHANGE_DELAY = 0.02f;
+        
         private JSONStorableFloat _minPosition;
         private JSONStorableFloat _maxPosition;
         private JSONStorableFloat _speed;
@@ -45,21 +47,22 @@ namespace VAMLaunchPlugin.MotionSources
             plugin.RegisterFloat(_speed);
             _animationOffset = new JSONStorableFloat("oscAnimationOffset", 0.0f, 0.0f, 0.5f);
             plugin.RegisterFloat(_animationOffset);
-            
-            _targetAnimationAtomChooser = new JSONStorableStringChooser("oscSourceTargetAnimationAtom", GetTargetAnimationAtomChoices(), "", "Target Animation Pattern",
+
+            _targetAnimationAtomChooser = new JSONStorableStringChooser("oscSourceTargetAnimationAtom",
+                GetTargetAnimationAtomChoices(), "", "Target Animation Pattern",
                 (name) =>
                 {
                     _animationAtomController = null;
                     _targetAnimationPattern = null;
-                    
+
                     var atom = SuperController.singleton.GetAtomByUid(name);
                     if (atom && atom.animationPatterns.Length > 0)
                     {
                         _animationAtomController = atom.freeControllers[0];
                         _targetAnimationPattern = atom.animationPatterns[0];
-                        _targetAnimationPattern.SetBoolParamValue("autoPlay", true);
-                        _targetAnimationPattern.SetBoolParamValue("loopOnce", false);
-                        _targetAnimationPattern.Play();
+                        //_targetAnimationPattern.SetBoolParamValue("autoPlay", true);
+                        //_targetAnimationPattern.SetBoolParamValue("loopOnce", false);
+                        //_targetAnimationPattern.Play();
                     }
                 });
             plugin.RegisterStringChooser(_targetAnimationAtomChooser);
@@ -139,8 +142,8 @@ namespace VAMLaunchPlugin.MotionSources
                 _moveUpwards = !_moveUpwards;
                 
                 float dist = _maxPosition.val - _minPosition.val;
-                _dirChangeDuration = LaunchUtils.PredictMoveDuration(dist, _speed.val);
-                _dirChangeTimer = _dirChangeDuration;
+                _dirChangeDuration = LaunchUtils.PredictMoveDuration(dist, _speed.val) + LAUNCH_DIR_CHANGE_DELAY;
+                _dirChangeTimer = _dirChangeDuration - Mathf.Min(_dirChangeDuration, -_dirChangeTimer);
                 
                 outPos = _moveUpwards ? (byte)_maxPosition.val :  (byte)_minPosition.val;
                 outSpeed = (byte) _speed.val;
@@ -160,7 +163,8 @@ namespace VAMLaunchPlugin.MotionSources
 
             if (_pluginFreeController.selected && SuperController.singleton.editModeToggle.isOn)
             {
-                _lineDrawer0.SetLinePoints(_pluginFreeController.transform.position, _animationAtomController.transform.position);
+                _lineDrawer0.SetLinePoints(_pluginFreeController.transform.position,
+                    _animationAtomController.transform.position);
                 _lineDrawer0.Draw();
             }
             

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using VAMLaunchPlugin.MotionSources;
@@ -20,7 +19,6 @@ namespace VAMLaunchPlugin
         private JSONStorableStringChooser _motionSourceChooser;
         private JSONStorableBool _pauseLaunchMessages;
         private JSONStorableFloat _simulatorPosition;
-        public float SimulatorPosition => _simulatorPosition.val;
         
         private float _simulatorTarget;
         private float _simulatorSpeed;
@@ -31,13 +29,15 @@ namespace VAMLaunchPlugin
 
         private List<string> _motionSourceChoices = new List<string>
         {
-            "OscillateSource",
+            "Oscillate",
+            "Pattern",
             "Zone"
         };
 
         private List<IMotionSource> _motionSources = new List<IMotionSource>
         {
             new OscillateSource(),
+            new PatternSource(),
             new ZoneSource()
         };
         
@@ -71,7 +71,8 @@ namespace VAMLaunchPlugin
         
         private void InitStorables()
         {
-            _motionSourceChooser = new JSONStorableStringChooser("motionSource", _motionSourceChoices, "", "Motion Source",
+            _motionSourceChooser = new JSONStorableStringChooser("motionSource", _motionSourceChoices, "",
+                "Motion Source",
                 (string name) => { _desiredMotionSourceIndex = GetMotionSourceIndex(name); });
             _motionSourceChooser.choices = _motionSourceChoices;
             RegisterStringChooser(_motionSourceChooser);
@@ -124,8 +125,6 @@ namespace VAMLaunchPlugin
                 {
                     _currentMotionSource = _motionSources[_desiredMotionSourceIndex];
                     _currentMotionSource.OnInit(this);
-                    SuperController.LogMessage(string.Format("VAMLaunch: {0} Motion Source Loaded.",
-                        _motionSourceChoices[_desiredMotionSourceIndex]));
                 }
 
                 _currentMotionSourceIndex = _desiredMotionSourceIndex;

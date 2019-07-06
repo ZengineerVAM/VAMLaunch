@@ -6,8 +6,8 @@ namespace VAMLaunchPlugin
     public static class LaunchUtils
     {
         public const float LAUNCH_MAX_VAL = 99.0f;
-        public const float LAUNCH_MIN_SPEED = 20.0f;
-        public const float LAUNCH_MAX_SPEED = 80.0f;
+        public const float LAUNCH_MIN_SPEED = 10.0f;
+        public const float LAUNCH_MAX_SPEED = 90.0f;
         
         // https://github.com/funjack/launchcontrol/blob/master/protocol/funscript/functions.go#L10
         public static float PredictMoveSpeed(float prevPos, float currPos, float durationSecs)

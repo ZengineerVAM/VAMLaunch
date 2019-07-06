@@ -235,26 +235,32 @@ namespace VAMLaunchPlugin.MotionSources
             
             _positionSampleRate = new JSONStorableFloat("zoneSourcePositionSampleRate", 40.0f, 10.0f, 90.0f);
             plugin.RegisterFloat(_positionSampleRate);
-            
-            _minLaunchSignalTimeThreshold = new JSONStorableFloat("zoneSourceMinLaunchSignalTimeThreshold", 0.1f, 0.001f, 0.4f);
+
+            _minLaunchSignalTimeThreshold =
+                new JSONStorableFloat("zoneSourceMinLaunchSignalTimeThreshold", 0.1f, 0.001f, 0.4f);
             plugin.RegisterFloat(_minLaunchSignalTimeThreshold);
-            
-            _maxLaunchSignalTimeThreshold = new JSONStorableFloat("zoneSourceMaxLaunchSignalTimeThreshold", 0.25f, 0.001f, 0.4f);
+
+            _maxLaunchSignalTimeThreshold =
+                new JSONStorableFloat("zoneSourceMaxLaunchSignalTimeThreshold", 0.25f, 0.001f, 0.4f);
             plugin.RegisterFloat(_maxLaunchSignalTimeThreshold);
-            
-            _currentLaunchSignalTimeThreshold = new JSONStorableFloat("zoneSourceCurrentLaunchSignalTimeThreshold", 0.099f, 0.001f, 0.4f);
+
+            _currentLaunchSignalTimeThreshold =
+                new JSONStorableFloat("zoneSourceCurrentLaunchSignalTimeThreshold", 0.099f, 0.001f, 0.4f);
             plugin.RegisterFloat(_currentLaunchSignalTimeThreshold);
-            
-            _lowerVelocityBarrier = new JSONStorableFloat("zoneSourceLowerVelocityBarrier", 10.0f, 0.0f, LaunchUtils.LAUNCH_MAX_VAL);
+
+            _lowerVelocityBarrier =
+                new JSONStorableFloat("zoneSourceLowerVelocityBarrier", 10.0f, 0.0f, LaunchUtils.LAUNCH_MAX_VAL);
             plugin.RegisterFloat(_lowerVelocityBarrier);
-            
-            _higherVelocityBarrier = new JSONStorableFloat("zoneSourceHigherVelocityBarrier", 45.0f, 0.0f, LaunchUtils.LAUNCH_MAX_VAL);
+
+            _higherVelocityBarrier = new JSONStorableFloat("zoneSourceHigherVelocityBarrier", 45.0f, 0.0f,
+                LaunchUtils.LAUNCH_MAX_VAL);
             plugin.RegisterFloat(_higherVelocityBarrier);
             
             _launchSpeedMultiplier = new JSONStorableFloat("zoneSourceLaunchSpeedMultiplier", 1.0f, 0.01f, 2.0f);
             plugin.RegisterFloat(_launchSpeedMultiplier);
 
-            _targetAtomChooser = new JSONStorableStringChooser("zoneSourceTargetAtom", GetTargetAtomChoices(), "", "Target Atom",
+            _targetAtomChooser = new JSONStorableStringChooser("zoneSourceTargetAtom", GetTargetAtomChoices(), "",
+                "Target Atom",
                 (name) =>
                 {
                     _targetAtom = SuperController.singleton.GetAtomByUid(name);
@@ -264,17 +270,19 @@ namespace VAMLaunchPlugin.MotionSources
                     }
                     else
                     {
-                        _targetController = _targetAtom.GetStorableByID(_targetControllerChooser.val) as FreeControllerV3;
+                        _targetController =
+                            _targetAtom.GetStorableByID(_targetControllerChooser.val) as FreeControllerV3;
                     }
-                    
+
                     if (_targetController == null)
                     {
                         _targetControllerChooser.SetVal("");
                     }
                 });
             plugin.RegisterStringChooser(_targetAtomChooser);
-            
-            _targetControllerChooser = new JSONStorableStringChooser("zoneSourceTargetController", GetTargetControllerChoices(), "", "Target Control",
+
+            _targetControllerChooser = new JSONStorableStringChooser("zoneSourceTargetController",
+                GetTargetControllerChoices(), "", "Target Control",
                 (name) =>
                 {
                     if (_targetAtom == null)
@@ -502,14 +510,17 @@ namespace VAMLaunchPlugin.MotionSources
                         _zoneFreeController.gameObject.layer, null, 0, null, false, false);
 
                     float relTargetPos = _currentTargetPos.val / (99.0f * 2.0f);
-                    
-                    Vector3 targetPosBoxScale = new Vector3(0.2f, _targetZoneHeight.val * ZONE_MESH_SCALAR * relTargetPos * 2.0f, 0.2f); 
-                    
+
+                    Vector3 targetPosBoxScale = new Vector3(0.2f,
+                        _targetZoneHeight.val * ZONE_MESH_SCALAR * relTargetPos * 2.0f, 0.2f);
+
+
                     Matrix4x4 targetPosMatrix = Matrix4x4.TRS(
-                        _zoneFreeController.transform.position + 
-                        _zoneFreeController.transform.rotation * Vector3.right * (_targetZoneWidth.val + 0.01f) + 
-                        _zoneFreeController.transform.rotation * Vector3.down * _targetZoneHeight.val + 
-                        _zoneFreeController.transform.rotation * Vector3.up * _targetZoneHeight.val * relTargetPos * 2.0f,
+                        _zoneFreeController.transform.position +
+                        _zoneFreeController.transform.rotation * Vector3.right * (_targetZoneWidth.val + 0.01f) +
+                        _zoneFreeController.transform.rotation * Vector3.down * _targetZoneHeight.val +
+                        _zoneFreeController.transform.rotation * Vector3.up * _targetZoneHeight.val * relTargetPos *
+                        2.0f,
                         _zoneFreeController.transform.rotation,
                         targetPosBoxScale);
                     
@@ -518,14 +529,16 @@ namespace VAMLaunchPlugin.MotionSources
 
                     if (_targetAtom != null && _targetController != null)
                     {
-                        _lineDrawer0.SetLinePoints(_zoneFreeController.transform.position, _targetController.transform.position);
+                        _lineDrawer0.SetLinePoints(_zoneFreeController.transform.position,
+                            _targetController.transform.position);
                         _lineDrawer0.Draw();
                     }
                 }
 
                 if (controllerSelected)
                 {
-                    _lineDrawer1.SetLinePoints(_pluginFreeController.transform.position, _zoneFreeController.transform.position);
+                    _lineDrawer1.SetLinePoints(_pluginFreeController.transform.position,
+                        _zoneFreeController.transform.position);
                     _lineDrawer1.Draw();
                 }
             }
