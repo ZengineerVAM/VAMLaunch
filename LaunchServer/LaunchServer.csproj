@@ -96,14 +96,6 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScriptPlayer.Shared\Classes\BlockingQueue.cs" />
-    <Compile Include="ScriptPlayer.Shared\Controls\QueueEntry.cs" />
-    <Compile Include="ScriptPlayer.Shared\Devices\CommandConverter.cs" />
-    <Compile Include="ScriptPlayer.Shared\Devices\Device.cs" />
-    <Compile Include="ScriptPlayer.Shared\Devices\DeviceCommandInformation.cs" />
-    <Compile Include="ScriptPlayer.Shared\Devices\DeviceController.cs" />
-    <Compile Include="ScriptPlayer.Shared\Devices\Launch.cs" />
-    <Compile Include="ScriptPlayer.Shared\Devices\LaunchBluetooth.cs" />
     <Compile Include="VAMLaunchNetwork.cs" />
     <Compile Include="VAMLaunchServer.cs" />
   </ItemGroup>

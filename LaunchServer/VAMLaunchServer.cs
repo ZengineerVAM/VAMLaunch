@@ -4,7 +4,6 @@ using Buttplug.Client;
 using Buttplug.Core.Logging;
 using Buttplug.Core.Messages;
 using Buttplug.Server;
-using ScriptPlayer.Shared;
 using DeviceAddedEventArgs = Buttplug.Client.DeviceAddedEventArgs;
 
 namespace VAMLaunch
