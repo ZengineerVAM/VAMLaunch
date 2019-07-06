@@ -45,7 +45,6 @@ namespace VaMLaunchGUI
         private List<ButtplugClientDevice> _devices = new List<ButtplugClientDevice>();
         private Task _connectTask;
         private bool _quitting;
-        private bool _useEmbeddedServer = true;
         private Logger _log;
 
         public EventHandler ConnectedHandler;
@@ -53,7 +52,6 @@ namespace VaMLaunchGUI
         public EventHandler<string> LogMessageHandler;
         public bool IsConnected => _client.Connected;
 
-        private bool _speedNeedsRecalc = false;
         private Timer commandTimer;
 
         public IntifaceControl()
@@ -75,7 +73,7 @@ namespace VaMLaunchGUI
             IButtplugClientConnector connector;
             //if (_useEmbeddedServer)
             {
-                var embeddedConnector = new ButtplugEmbeddedConnector("GVR Embedded Server", 0, _deviceManager);
+                var embeddedConnector = new ButtplugEmbeddedConnector("VaMLaunch Embedded Server", 0, _deviceManager);
                 if (_deviceManager == null)
                 {
                     _deviceManager = embeddedConnector.Server.DeviceManager;
@@ -83,7 +81,7 @@ namespace VaMLaunchGUI
                 connector = embeddedConnector;
             }
 
-            var client = new ButtplugClient("GVR - IPC", connector);
+            var client = new ButtplugClient("VaMLaunch Client", connector);
             while (!_quitting)
             {
                 try
@@ -98,7 +96,7 @@ namespace VaMLaunchGUI
                     await Dispatcher.Invoke(async () =>
                     {
                         ConnectedHandler?.Invoke(this, new EventArgs());
-                        ConnectionStatus.Content = "Connected to Intiface (Embedded)";
+                        ConnectionStatus.Content = "Connected";
                         await StartScanning();
                         _scanningButton.Visibility = Visibility.Visible;
                     });
