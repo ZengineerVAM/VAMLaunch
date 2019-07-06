@@ -1,8 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29025.244
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VAMLaunch", "VAMLaunch\VAMLaunch.csproj", "{9CB01EB1-928B-44A8-900C-5314E6489162}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaunchServer", "LaunchServer\LaunchServer.csproj", "{F1CF14E9-3EEC-4C5B-A266-B48714E99D34}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaunchServerLib", "LaunchServerLib\LaunchServerLib.csproj", "{6102E47A-D846-4DE1-81B4-9489DA3B6BF0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +23,15 @@ Global
 		{F1CF14E9-3EEC-4C5B-A266-B48714E99D34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1CF14E9-3EEC-4C5B-A266-B48714E99D34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1CF14E9-3EEC-4C5B-A266-B48714E99D34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6102E47A-D846-4DE1-81B4-9489DA3B6BF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6102E47A-D846-4DE1-81B4-9489DA3B6BF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6102E47A-D846-4DE1-81B4-9489DA3B6BF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6102E47A-D846-4DE1-81B4-9489DA3B6BF0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4BAAC1F8-8C60-418A-A173-84D374A37946}
 	EndGlobalSection
 EndGlobal

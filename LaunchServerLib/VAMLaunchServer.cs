@@ -1,15 +1,19 @@
 using System;
 using System.Threading;
-using Buttplug.Client;
-using Buttplug.Core.Logging;
-using Buttplug.Core.Messages;
-using Buttplug.Server;
-using DeviceAddedEventArgs = Buttplug.Client.DeviceAddedEventArgs;
 
 namespace VAMLaunch
 {
+    public class PositionUpdateEventArgs : EventArgs
+    {
+        public uint Position;
+        public uint Speed;
+        public uint Duration;
+    }
+
+
     public class VAMLaunchServer
     {
+        public EventHandler<PositionUpdateEventArgs> PositionUpdate;
         private const string SERVER_IP = "127.0.0.1";
         private const int SERVER_LISTEN_PORT = 15601;
         private const int SERVER_SEND_PORT = 15600;
@@ -30,10 +34,6 @@ namespace VAMLaunch
         private float _latestLaunchDuration;
         private bool _hasNewLaunchSnapshot;
         private DateTime _timeOfLastLaunchUpdate;
-
-        private ButtplugClient _client;
-        private DeviceManager _deviceManager;
-        private ButtplugClientDevice _launchDevice;
 
         public void Run()
         {
@@ -56,168 +56,50 @@ namespace VAMLaunch
             }
         }
 
-        private void UpdateThread()
+        public void UpdateThread()
         {
             _network = new VAMLaunchNetwork();
             if (!_network.Init(SERVER_IP, SERVER_LISTEN_PORT, SERVER_SEND_PORT))
             {
                 return;
             }
-            
+
+            _running = true;
+
             Console.WriteLine("SERVER IS ON");
             Console.WriteLine("Your Launch device is ready to go when your device shows a solid blue light.");
             Console.WriteLine("Note: You can type the command \"lc\" to attempt to re-establish communication.");
 
             _timeOfLastLaunchUpdate = DateTime.Now;
             
-            TryConnectToLaunch();
-            
             while (_running)
             {
                 lock (_inputLock)
                 {
-                    ProcessUserCmd(_userCmd);
                     _userCmd = null;
                 }
 
                 ProcessNetworkMessages();
-                UpdateLaunch();
+                UpdateMovement();
 
                 if (_running)
                 {
                     Thread.Sleep(1000 / NETWORK_POLL_RATE);
                 }
             }
-            
-            // While this requires a wait as this is normally an async call,
-            // that's usually to confirm network shutdown. We're fine to just
-            // block on this until all devices are stopped.
-            _client.DisconnectAsync().Wait();
-            
+
             _network.Stop();
         }
 
-        private void OnDisconnected(object sender, EventArgs e)
+        private void UpdateMovement()
         {
-            _launchDevice = null;
-            Console.WriteLine("**Launch Disconnected**");
-        }
-
-        private void OnDeviceRemoved(object sender, DeviceRemovedEventArgs e)
-        {
-            // Only update if we've dropped our linear movement device.
-            if (_launchDevice != null && e.Device.Index == _launchDevice.Index)
-            {
-                _launchDevice = null;
-                Console.WriteLine("**Launch Device Removed**");
-            }
-        }
-
-        private void OnDeviceAdded(object sender, DeviceAddedEventArgs e)
-        {
-            if (_launchDevice != null)
-            {
-                Console.WriteLine($"**Device {e.Device.Name} Found but we already have a device, ignoring**");
-                return;
-            }
-            if (!e.Device.AllowedMessages.ContainsKey(typeof(LinearCmd)))
-            {
-                Console.WriteLine($"**Device {e.Device.Name} Found but does not support linear movement, ignoring**");
-                return;
-            }
-            Console.WriteLine($"**Adding Device {e.Device.Name}");
-            _launchDevice = e.Device;
-        }
-
-        private void LaunchDeviceOnDisconnected(object sender, Exception e)
-        {
-            Console.WriteLine("**Launch Disconnected** {0}", e.Message);
-        }
-
-        private void OnLogMessage(object sender, LogEventArgs e)
-        {
-            Console.WriteLine($"Buttplug: {e.Message.LogLevel} {e.Message.LogMessage}");
-        }
-
-        private void TryConnectToLaunch()
-        {
-            _launchDevice = null;
-            if (_client != null)
-            {
-                _client.DisconnectAsync().Wait();
-            }
-            
-            _client = new ButtplugClient("VaMLaunch Client", new ButtplugEmbeddedConnector("VaMLaunch Server"));
-            _client.DeviceAdded += OnDeviceAdded;
-            _client.DeviceRemoved += OnDeviceRemoved;
-            _client.ServerDisconnect += OnDisconnected;
-            //_client.Log += OnLogMessage;
-            _client.ConnectAsync().Wait();
-            _client.RequestLogAsync(ButtplugLogLevel.Debug).Wait();
-            _client.StartScanningAsync().Wait();
-        }
-        
-        private void ProcessUserCmd(string cmd)
-        {
-            if (string.IsNullOrEmpty(cmd))
-            {
-                return;
-            }
-
-            var splits = cmd.Split(' ');
-            if (splits.Length == 0)
-            {
-                return;
-            }
-            
-            if (splits[0] == "exit")
-            {
-                _running = false;
-            }
-            else if (splits[0] == "lc")
-            {
-                TryConnectToLaunch();
-            }
-            else if (splits[0] == "pos")
-            {
-                if (splits.Length < 3)
-                {
-                    return;
-                }
-
-                byte pos;
-                byte speed;
-
-                if (byte.TryParse(splits[1], out pos) && byte.TryParse(splits[2], out speed))
-                {
-                    _latestLaunchPos = Math.Max(Math.Min(pos, (byte)99), (byte)0);
-                    _latestLaunchSpeed = Math.Max(Math.Min(speed, (byte)99), (byte)0);
-                }
-            }
-        }
-
-        private async void SetLaunchPosition(byte pos, byte speed)
-        {
-            if (_launchDevice != null)
-            {
-                await _launchDevice.SendFleshlightLaunchFW12Cmd(speed, pos);
-            }
-        }
-
-        private void UpdateLaunch()
-        {
-            if (_launchDevice == null)
-            {
-                return;
-            }
-
             var now = DateTime.Now;
             TimeSpan timeSinceLastUpdate = now - _timeOfLastLaunchUpdate;
             if (timeSinceLastUpdate.TotalSeconds > LAUNCH_UPDATE_INTERVAL)
             {
                 if (_hasNewLaunchSnapshot)
                 {
-                    SetLaunchPosition(_latestLaunchPos, _latestLaunchSpeed);
+                    PositionUpdate?.Invoke(this, new PositionUpdateEventArgs { Position = _latestLaunchPos, Speed = _latestLaunchSpeed, Duration = _latestLaunchDuration });
                     _hasNewLaunchSnapshot = false;
                 }
                 
