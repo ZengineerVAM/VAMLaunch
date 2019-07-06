@@ -20,12 +20,14 @@
             <Span FontSize="19" FontWeight="Bold">VaM Sync Server v1</Span><LineBreak />
             By <Hyperlink NavigateUri="https://github.com/zengineervam" RequestNavigate="Hyperlink_RequestNavigate">zengineer</Hyperlink><LineBreak />
             <LineBreak/>
-            Software updates at <Hyperlink NavigateUri="https://github.com/zengineervam/VaMLaunch" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/zengineervam/VaMLaunch/releases</Hyperlink><LineBreak/>
+            Software updates at <Hyperlink NavigateUri="https://github.com/zengineervam/VaMLaunch/releases" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/zengineervam/VaMLaunch/releases</Hyperlink><LineBreak/>
             Source code at <Hyperlink NavigateUri="https://github.com/zengineervam/VaMLaunch" RequestNavigate="Hyperlink_RequestNavigate">https://github.com/zengineervam/VaMLaunch</Hyperlink><LineBreak/>
             Discord Server at <Hyperlink NavigateUri="https://discordapp.com/invite/VbfNN2x" RequestNavigate="Hyperlink_RequestNavigate">https://discordapp.com/invite/VbfNN2x</Hyperlink><LineBreak/>
-            License information <Hyperlink NavigateUri="https://github.com/zengineervam/VaMLaunch/blob/master/LICENSE" RequestNavigate="Hyperlink_RequestNavigate">here</Hyperlink><LineBreak/>
+            License information <Hyperlink NavigateUri="https://github.com/zengineervam/VaMLaunch/blob/master/LICENSE" RequestNavigate="Hyperlink_RequestNavigate">available on github.</Hyperlink><LineBreak/>
             <LineBreak/>
-            VaMSync uses for hardware sync. More Info at  <Hyperlink NavigateUri="https://discordapp.com/invite/VbfNN2x" RequestNavigate="Hyperlink_RequestNavigate">Buttplug (https://buttplug.io)</Hyperlink>.
+            VaMSync uses Buttplug for hardware sync. More Info at <Hyperlink NavigateUri="https://buttplug.io" RequestNavigate="Hyperlink_RequestNavigate">Buttplug (https://buttplug.io)</Hyperlink>. Help support Buttplug on <Hyperlink NavigateUri="https://patreon.com/qdot" RequestNavigate="Hyperlink_RequestNavigate">Patreon.</Hyperlink><LineBreak/>
+            <LineBreak/>
+            VaMSync uses some code from ScriptPlayer Hardware Synced Movie Player. More Info on <Hyperlink NavigateUri="https://buttplug.io" RequestNavigate="Hyperlink_RequestNavigate">ScriptPlayer github</Hyperlink>.
         </TextBlock>
     </Grid>
 </UserControl>
