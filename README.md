@@ -1,58 +1,77 @@
-# VAM Launch v0.1
-## VAM Plugin that adds support for Launch devices.
+# VAM Launch v0.2
+## VAM Plugin that adds support for Launch devices (and others through Buttplug.io)
 
-Latest version download: [v0.1](https://github.com/ZengineerVAM/VAMLaunch/raw/master/VAMLaunch-0.1.zip)
 
-###### First off
+[![GitHub release](https://img.shields.io/github/release-pre/ZengineerVAM/VAMLaunch.svg)](https://github.com/ZengineerVAM/VAMLaunch/releases/download/v0.1/VAMLaunch-0.1.zip)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/zengineering)
 
-VAM Launch uses code from the [ScriptPlayer](https://github.com/FredTungsten/ScriptPlayer)
-project in order to achieve bluetooth communication with the Launch device.
-> The ScriptPlayer code is licenced under the BSD 3-Clause License
+### Version 0.2 Features
 
-> Copyright (c) 2017, Fred Tungsten
+A HUGE thanks to [qdot](https://github.com/qdot) for collaborating with me to bring you:
+#### • <a href="https://buttplug.io/"><img src="https://avatars2.githubusercontent.com/u/39504077?s=200&v=4" width="32" height="32" /></a> Buttplug.io support
+VAMLaunch now supports any device that is supported by Buttplug that accepts linear commands.
+> Launch, Kiiroo Onyx 1/2/2.1, Titan 1, RealTouch
 
-> All rights reserved.
+#### • New LaunchServer GUI
+[qdot](https://github.com/qdot) has implemented a fantastic GUI interface to
+setup connections with all your devices.
+No more ugly command line server!
 
-I have tried to respect the license by placing headers in all the source code taken from that
-project, and I want to give a large thanks to the developers involved in
-ScriptPlayer as this would not have been possible without their hard work.
+<img src="Docs/Images/VAMLaunchServerGUI.PNG" width="400"/>
 
-Full license information for ScriptPlayer can be found [here](https://raw.githubusercontent.com/FredTungsten/ScriptPlayer/master/LICENSE)
+#### • New Installer
+The VAMLaunch now comes with an easy to use installer.
 
-For any code written by myself for VAM Launch specifically, I will not hold any license to
-it and you may do anything you wish with it. In fact I hope people do take this
-code and improve on it.
+#### • New Motion Sources
+There are new (and more reliable) ways to create device motion from within VAM, it really is possible now to achieve near 1:1 sync:
 
-###### Features
+###### Oscillate Mode
 
-- Handles bluetooth connection to Launch devices
-- An experimental system that analyses the movement of a target atom and predicts
-a motion to perform in order to get around the hardware limitations of the Launch device.
-- In game menu to adjust prediction settings and sample zone.
+[Instructions](Docs/OscilateMode.md)
 
-##### Prediction System
+Oscillate mode simply tells the device to move up and down at a certain speed, what makes this mode even more powerful is the ability to set an optional target AnimationPattern; VAMLaunch will take over this pattern and automatically adjust it's play time and speed to match the oscillation.
 
-One of the biggest challenges of getting the Launch to work well with VAM is the
-fact that it doesn't like to have it's position updated very frequently as it
-starts to jitter and not respond very well.
+<img src="Docs/Images/osc_mode.gif" width="600"/>
 
-When you send a message to the device you have to define a position (which has
-a range of 0-99) and a speed (which also has a range of 0-99).
+##### AnimationPattern Mode
 
-Sending updates at a slower rate makes accuracy hard, because by the time you have
-the information you need (velocity data from sampling multiple positions) you are
-already too late and the device motion will not accurately match what happened.
+[Instructions](Docs/AnimationPatternMode.md)
 
-VAM Launch implements a basic system that tries to "predict" what sort of motions to take
-in order to match what's happening on screen. This system is far from perfect and
-suffers from a slight delay but it seems to work fairly well in certain conditions.
+AnimationPattern mode works like oscillation mode but in reverse. Instead of an oscillation driving a motion and pattern, a target pattern is driving the motion directly.
 
-> To get the best out of the system make sure you're creating motions that smoothly go up
-and down in a fairly linear manner.
-> Slower motions may cause some strange behavior and if your motions are too fast
-then the device will not be able to keep up.
+<img src="Docs/Images/pattern_mode.gif" width="600"/>
 
-###### Making sure your Launch device is ready
+#### • Influence Zone Mode (Experimental)
+
+[Instructions](Docs/InfluenceZoneMode.md)
+
+Influence Zone Mode: The original mode is still here with some additional quality of life improvements. Zone mode enables motion by analysing the motion of an atom within a zone of influence. This mode is the least accurate of the three modes, but it is the most adaptable.
+
+<img src="Docs/Images/zone_mode.gif" width="600"/>
+
+#### • New trigger actions
+You can now make it easier for users of your scene to control their device through three new triggers:
+- startLaunch
+- stopLaunch
+- toggleLaunch
+
+
+### Installation
+
+Inside the .zip you will find two things:
+
+- The VAMLaunch server installer: vamlaunch-installer.exe
+- The VAM Plugin ("VAMLaunch" folder)
+
+Start by running the installation program, you can install this to anywhere on your computer.
+
+<img src="Docs/Images/installer.PNG" width="300"/>
+
+Once this is installed, copy the VAMLaunch plugin folder to this location:
+
+YOUR_VAM_LOCATION/Saves/Scripts
+
+### Making sure your Launch device is ready
 
 I highly suggest following the instructions [here](https://github.com/FredTungsten/ScriptPlayer/wiki/Installation)
 and testing your device with ScriptPlayer first to confirm you have everything
@@ -61,129 +80,59 @@ set up correctly.
 If your device can connect to ScriptPlayer then it is highly likely it will work
 with this plugin.
 
-###### VAMLaunch Plugin and LaunchServer
+### Connect Your Device
 
-There are two pieces to VAM Launch, the plugin for VAM and the LaunchServer
-which directly controls the device.
+Before running VAM you will want to connect your device to the VAMLaunch server.
 
-Because VAM has security rules in place to prevent certain libraries running
-it was necessary to create an external application that performs the bluetooth
-connection to the device.  
+Open the VAMLaunch server application (Which will now be located where you installed it)
 
-The VAM Plugin communicates to the LaunchServer through UDP.
+<img src="Docs/Images/devices.PNG" width="300"/>
 
-###### LaunchServer Installation
+The application should start searching immediately when it opens, in the case of the Launch device make sure it is on with the blue light flashing.
+Once connected the blue light on your device should become solid and you will be able to view your device in the list.
+Simply tick the device to enable it.
 
-<img src="Docs/Images/launchserver.PNG"/>
+You are now ready to start using VAMLaunch within VAM!
 
-LaunchServer.exe can be run from anywhere and needs to be active during your
-whole VAM session.
-It is highly recommended that you turn on your Launch device before running the
-server.
-You will know when your device is connected because your bluetooth light will
-go a solid blue.
+### Starting The Plugin
 
-If you wish to reattempt the connection, you can type the cmd: "lc".
+VAMLaunch can be loaded onto any Atom in VAM. Simply select an Atom (In this case we have created a sphere Atom)
 
-###### Plugin Usage
+Go to the Plugins tab and press "Add Plugin", select the ADD_ME.cslist file found in:
 
-First off you need to place the "VAMLaunch" folder in
-YOUR_VAM_LOCATION/Saves/Scripts
+"YOUR_VAM_LOCATION/Saves/Scripts/VAMLaunch" (If you followed the above installing instructions)
 
-Next in your scene you need to create an empty atom
+<img src="Docs/Images/loadplugin.PNG" width="600"/>
 
-<img src="Docs/Images/emptyatom.PNG"/>
+### Plugin Menu
 
-You then need to select the atom and go to the plugin section
+To open the plugin menu press "Open Custom UI" next to the VAMLaunch plugin in the list.
 
-<img src="Docs/Images/addplugin.PNG"/>
+You will be shown this interface:
 
-You then need to select the ADD_ME.cslist file to run the plugin.
+<img src="Docs/Images/options.PNG" width="400"/>
 
-<img src="Docs/Images/pluginadded.PNG"/>
+In the above image, the area marked in red contains the main options, and they will remain visible regardless of what mode VAMLaunch is in:
 
-If successful you should see the plugin appear in the list and your empty atom
-will now have a pink cube around it.
+- "Pause Launch": By default your device should begin paused, simply untick this to begin sending messages to the device. (You can also use the "startLaunch", "stopLaunch" and "toggleLaunch" triggers to control this value from an in game button for example).
+- "Simulator": This slider is moved automatically, its position represents a guess of how your real device will behave when interacting with VAM. This is very useful for fine tuning your scenes to get the most accurate motions out of the device.
+- "Motion Source": Here you can select different motion sources for VAMLaunch, choosing one will change what is in this menu to Motion Source specific features.
 
-This pink cube is the "Influence Zone", the idea is that you specify another
-object to track and the system will look at where the object is inside the cube.
-If the object is at the top of the cube it means the Launch device will be fully
-up and if at the bottom of the cube the device will be fully down.
+The rest of the options are explained in the instructions for each Motion Source Mode:
+- [Oscillate Mode Instructions](Docs/OscilateMode.md)
+- [AnimationPattern Mode Instructions](Docs/AnimationPatternMode.md)
+- [Influence Zone Mode Instructions](Docs/InfluenceZoneMode.md)
 
-> **It is important to note that it tracks the local Y axis inside the cube, make
-sure your cube is pointed upwards (the green arrow), or Y is aligned with your
-path of motion.**
+## Support The Project
 
-To set the target object and adjust the zone size, we need to enter the plugin
-menu.
+If you enjoy using VAMLaunch, you can support the project through PayPal:
 
-##### Options Menu
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/zengineering)
 
-To open the menu go to the plugin section on your empty atom and press
-"Open Custom UI"
+Thank you!
 
-First off make sure you have a target object (In this case we will use a cube),
-either use the "Select VAM Launch Target" button or select an atom and controls
-from the list.
+## License
 
-> A yellow line will be drawn to your current target object.
+Buttplug and VAMLaunch are distributed under the BSD 3-Clause License.
 
-<img src="Docs/Images/connect.PNG" />
-
-Once all hooked up you need to move your influence zone to cover the area
-where the motion will happen.
-
-<img src="Docs/Images/cover.PNG" />
-
-In this example the cube will move up and down, we have placed the zone to cover
-this movement area.
-
-To adjust the zone size use the three sliders in the top right.
-
-<img src="Docs/Images/zonesize.PNG" />
-
-To help with tuning your setup correctly you can take a look at the
-"Current Launch Position" slider; this represents how your target
-object will translate into a vertical position for the Launch device.
-
-<img src="Docs/Images/launchposition.PNG" />
-
-Once you're happy with your setup and the launch position slider is responding
-well the last thing to do is to un-pause the messages being sent to the Launch device.
-
-<img src="Docs/Images/pause.PNG" />
-
-Your launch device should now be responding to any motion.
-
-##### Advanced settings
-
-<img src="Docs/Images/advanced.PNG" />
-
-These settings control how the system makes it's predictions:
-
-- Min / Max Adjust Time Threshold: The system will monitor how long the motion
-is going in a certain direction and then if the direction is held for a long
-enough time it will decide it's a valid motion and tell the device to move.
-The time threshold used is blended between these two values based on the current
-average velocity in the system.
-
-- Min / Max Adjust Time Vel Barrier: As mentioned above the time threshold is blended
-based on average velocity, when the average velocity is slow then a longer time
-threshold is used and when the average velocity is fast a shorter time threshold is used.
-These two values define what velocity is considered "slow" and "fast".
-
-- Launch Speed Multiplier - This will adjust the final speed output to the
-device to allow you to finely tweak how the device is reacting to your designed motion.
-
-##### For Modders
-
-For anyone wishing to try to improve upon my system, I have added one last thing
-to the plugin menu:
-
-<img src="Docs/Images/simulator.PNG" />
-
-The plugin contains a simple simulator for the Launch device, it will try to mimic
-what the device would do based on the messages sent to it. This can be quite
-useful for testing out different solutions for producing clean motions without having
-to deal with the real device all the time (but of course you should definitely test it
-on the final thing to confirm!)
+[View Full Licence](LICENSE)
