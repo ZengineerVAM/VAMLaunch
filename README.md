@@ -2,7 +2,7 @@
 ## VAM Plugin that adds support for Launch devices (and others through Buttplug.io)
 
 
-[![GitHub release](https://img.shields.io/github/release/ZengineerVAM/VAMLaunch.svg)](https://github.com/ZengineerVAM/VAMLaunch/releases/download/v1.0/VAMLaunch.v1.0.zip)
+[![GitHub release](https://img.shields.io/github/release/ZengineerVAM/VAMLaunch.svg)](https://github.com/ZengineerVAM/VAMLaunch/releases/tag/v1.0)
 ![](https://img.shields.io/github/downloads/ZengineerVAM/VAMLaunch/total.svg)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/zengineering)
 
