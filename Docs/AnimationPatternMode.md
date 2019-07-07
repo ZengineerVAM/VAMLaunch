@@ -22,4 +22,4 @@ Mode Options:
 
 > Example of mid points turned on.
 >
-> <img src="Images/osc_midpoints.png" width="200"/>
+> <img src="Images/osc_midpoints.PNG" width="200"/>

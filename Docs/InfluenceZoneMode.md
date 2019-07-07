@@ -28,12 +28,12 @@ then the device will not be able to keep up.
 
 When you change to this mode, VAMLaunch will automatically create a new Atom called "LaunchZone", a yellow line will be drawn from your plugin atom to the zone to help you find it.
 
-<img src="Images/zone.png" width="300"/>
+<img src="Images/zone.PNG" width="300"/>
 
 Next you will need to select a target for your zone:
 
-<img src="Images/zone_target.png" width="300"/>
-<img src="Images/zone_target_set.png" width="300"/>
+<img src="Images/zone_target.PNG" width="300"/>
+<img src="Images/zone_target_set.PNG" width="300"/>
 
 When a target has been set, another yellow line will be drawn from the zone to your target.
 

@@ -119,9 +119,9 @@ In the above image, the area marked in red contains the main options, and they w
 - "Motion Source": Here you can select different motion sources for VAMLaunch, choosing one will change what is in this menu to Motion Source specific features.
 
 The rest of the options are explained in the instructions for each Motion Source Mode:
-- [Oscillate Mode Instructions](Docs/OscilateMode.md)
-- [AnimationPattern Mode Instructions](Docs/AnimationPatternMode.md)
-- [Influence Zone Mode Instructions](Docs/InfluenceZoneMode.md)
+- [Oscillate Mode](Docs/OscilateMode.md)
+- [AnimationPattern Mode](Docs/AnimationPatternMode.md)
+- [Influence Zone Mode](Docs/InfluenceZoneMode.md)
 
 ## Support The Project
 
